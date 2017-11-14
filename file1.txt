@@ -1,2 +1,3 @@
 12.04am
 another line
+more lines in file1
