@@ -1,4 +1,4 @@
-# Downloaded online conent - Remove
+# Downloaded online content - Remove
 
 Show confirmation UI and proceed with remove handling only if user provides consent. 
 
@@ -14,3 +14,23 @@ Show confirmation UI and proceed with remove handling only if user provides cons
 3. Take user out of content structure screen
 
 Note - Learning plan API is a required follow up API call of content sync API in sync service framework
+
+
+# Offling Content Settings - Pass/Fail
+
+For a course, if learning admin user has enabled (set) offline content settings i.e. pass or fail checked along with optional failure action/retry, then once learning user passes or fails a module (content object) then do not allow user to launch any content object in that course
+
+1. Read pass and fail boolean values of content settings from `triggerStudentComponentPass` and `triggerStudentComponentFail` keys respectively in the response of existing current-user/downloadonlinecomponent API
+2. For each module (content object) store both these values in `StudentComponentMod` entity
+3. Every time we reload content structure screen (push or pop) then loop through all modules and disable launch module action for all modules in that course if one of these 2 conditions is true for any _one_ module -
+   1. `triggerStudentComponentFail` is enabled and user has `finished` but not `complete`d a module
+   2. `triggerStudentComponentPass` is enabled and user has `complete`d a module
+  
+Note - it is possible that multiple modules in a course has pass/fail settings but once user pass or fail any one of such modules then it is considered client's responsiblity to block the UI. Hence it is expected that at a time only one such module in a course will pass or fail.
+
+Further, learning admin can configure a course to be taken multiple times (>=1 retries) with 2 failure actions after all attempts are taken by user - lock item or remove item from user's learning plan
+
+In both cases, in content or content structure screen, we don't do anything special. Once such a course progress is synced with server then -
+1. In response of currentUserLearningPlan API call, we check if studentComponentID doesn't match with the one we have stored the previous progress then simply deleted the offline content.
+   1. Note we need to store `componentKey` in `StudentComponent` entity and `studentComponentID` in `LearningItemData` entity to identify this mismatch.
+2. In case failure action is lock item then we read an additional key `onlineStatus` inside `statusVOX` of each userTodo in `currentUserLearningPlan`. If this value is -2 then we can **Locked out** status.
