@@ -22,6 +22,16 @@ For a course, if learning admin user has enabled (set) offline content settings 
 
 1. Read pass and fail boolean values of content settings from `triggerStudentComponentPass` and `triggerStudentComponentFail` keys respectively in the response of existing current-user/downloadonlinecomponent API
 2. For each module (content object) store both these values in `StudentComponentMod` entity
+
+```swift
+@interface StudentComponentMod : NSManagedObject
+...
+...
+@property (nonatomic, retain) NSNumber * triggerStudentComponentPass;
+@property (nonatomic, retain) NSNumber * triggerStudentComponentFail;
+@end
+```
+
 3. Every time we reload content structure screen (push or pop) then loop through all modules and disable launch module action for all modules in that course if one of these 2 conditions is true for any _one_ module -
    1. `triggerStudentComponentFail` is enabled and user has `finished` but not `complete`d a module
    2. `triggerStudentComponentPass` is enabled and user has `complete`d a module
