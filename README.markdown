@@ -1,16 +1,17 @@
 # Guidelines
 
-1. Prefer to structure unit test function body in 3 sections -
+1. Write XCTestCase for one object and test one behavior at a time
+   * One XCTestCase file for every object/system under test (SUT)
+   * One behavior of one component at a time
+   * Prefer to structure unit test function body in 3 sections -
 
-   * Given - initial conditions
+      * Given - initial conditions
 
-   * When - perform actions
+      * When - perform actions
 
-   * Then - expect output/states
+      * Then - expect output/states
 
-Note, many a times `setup()` function would have some of the intial conditions or even all
-
-The object being tested is generally referred as the system under test (SUT).
+      Note, many a times `setup()` function would have some of the intial conditions or even all
 
 ```swift
 func testSuccessUsingCompanyText() {
@@ -92,3 +93,7 @@ fileprivate extension AICCWrapperTest {
     }
 }
 ```
+
+4. Isolate object
+   * Write one XCTestCase file for every component
+   * One behavior of one component at a time
