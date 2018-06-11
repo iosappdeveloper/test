@@ -1,7 +1,16 @@
 # Guidelines
 
-1. Preferrably structure a test case function body in 3 sections -  given, when and then
+1. Prefer to structure unit test function body in 3 sections -
 
+   * Given - initial conditions
+
+   * When - perform actions
+
+   * Then - expect output/states
+
+Note, many a times `setup()` function would have some of the intial conditions or even all
+
+The object being tested is generally referred as the system under test (SUT).
 
 ```swift
 func testSuccessUsingCompanyText() {
@@ -46,6 +55,11 @@ func testSuccessUsingCompanyText() {
 ```
 
 3. Fake network response using MockNetworkManager (Dependency injection)
+   * Usually an object (system under test i.e. SUT) depends on other objects to perform a behavior. Some of these dependencies are external or flaky in nature e.g network operations, UserDefaults, persistent store etc.
+   * Dependency injection in a SUT object can be done through -
+      + constructor
+      + property
+      + function
 
 ```swift
     func testAICCWrapperOnlineSettings() {
