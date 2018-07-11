@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="button.css">
+<style>
+  .centered {
+    padding: 15px;
+    text-align: center;
+  }
+</style>
+<script>
+  function PlateauSCORMAPI(url) {
+      console.log(url);
+      alert("LMS initialized ( " + url + " )");
+      this.LMSInitialize = function(value) {
+          document.body.innerHTML = document.body.innerHTML + "<br>" + "LMSInitialize: " + value;
+      }
+      this.LMSGetValue = function(element) {
+          console.log(element);
+          var value = "LMSGetValue from LMS";
+          document.body.innerHTML = document.body.innerHTML + "<br>" + "LMSGetValue: for element " + element + " " + value;
+          return value;
+      }
+      this.LMSSetValue = function(element, value) {
+          console.log(value);
+          document.body.innerHTML = document.body.innerHTML + "<br>" + "LMSSetValue: " + element + "=" + value;
+      }
+      this.LMSCommit = function(value) {
+          console.log(value);
+          document.body.innerHTML = document.body.innerHTML + "<br>" + "LMSCommit: " + value;
+      }
+      this.handleCloseChildWindow = function() {
+        document.body.innerHTML = document.body.innerHTML + "<br>" + "child window closed 1611";
+      }
+
+  }
+
+  function onLoad() {
+    window.API = new PlateauSCORMAPI("1610")
+      // alert("onLoad");
+  }
+  function openUrlInNewTab() {
+      window.open("https://google.com", "myWindow");
+  }
+  var childWindow;
+  function openUrlInNewWindow() {
+      childWindow = window.open("http://localhost/~I843250/s12.html");
+      // if (typeof childWindow.attachEvent != "undefined") {
+      //   childWindow.attachEvent("onunload", handleCloseChildWindow);
+      // } else if (typeof childWindow.addEventListener != "undefined") {
+      //   childWindow.addEventListener("unload", handleCloseChildWindow, false);
+      // }
+  }
+</script>
+</head>
+<body onload="onLoad()" onresize="onResize()" onpagehide="onPageHide()">
+  <h1>LMS server started on page load</h1>
+  <h3>Both buttons open new window</h3>
+  <div class="centered">
+    <button id="openUrlInNewTabButtonId" class="btn info" onclick="openUrlInNewTab()">Open google.com</button>
+  </div>
+  <div class="centered">
+    <button id=openUrlInNewWindowButtonId"" class="btn info" onclick="openUrlInNewWindow()">Open scorm12 page</button>
+  </div>
+</body>
+</html>
