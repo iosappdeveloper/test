@@ -94,6 +94,14 @@ fileprivate extension AICCWrapperTest {
 }
 ```
 
-4. Isolate object
-   * Write one XCTestCase file for every component
-   * One behavior of one component at a time
+4. Strive to write one `XCTestCase` class(file) to test only one component (SUT), not multiple.
+  * name of test class/file should include the test component's name. E.g.
+    actual component's name: `LMSOfflineContentBrowserViewModel`
+    test component's name: `LMSOfflineContentBrowserViewModelTest`
+  * if you need to create another component to test the selected component then its perfectly fine (integrated testing).
+5. Prefer to write one test function to test only a single behavior of test component
+6. Prefer to use swift language error handling mechanism to catch programmer/compiler's error. This will keep test clean and focussed.
+  * it helps write non-distracting, purposeful statements by avoiding unnecessary test framework statements like `XCTFail`/`XCTAssert` or even `fatalError()` to cover errors that are bound to be programmer or compile time (language) errors.
+  * avoid over use of `throw` particularly in `when` and `then` section
+  * usually statements in `given` section including helper functions of test are perfect to `throw` error
+  
