@@ -95,13 +95,31 @@ fileprivate extension AICCWrapperTest {
 ```
 
 4. Strive to write one `XCTestCase` class(file) to test only one component (SUT), not multiple.
-  * name of test class/file should include the test component's name. E.g.
-    actual component's name: `LMSOfflineContentBrowserViewModel`
-    test component's name: `LMSOfflineContentBrowserViewModelTest`
-  * if you need to create another component to test the selected component then its perfectly fine (integrated testing).
+    * name of test class/file should include the test component's name. For example -
+      * actual component's name: `LMSOfflineContentBrowserViewModel`
+      * test component's name: `LMSOfflineContentBrowserViewModelTest`
+    * if you need to create another component to test the selected component then its perfectly fine (integrated testing).
+    
 5. Prefer to write one test function to test only a single behavior of test component
-6. Prefer to use swift language error handling mechanism to catch programmer/compiler's error. This will keep test clean and focussed.
-  * it helps write non-distracting, purposeful statements by avoiding unnecessary test framework statements like `XCTFail`/`XCTAssert` or even `fatalError()` to cover errors that are bound to be programmer or compile time (language) errors.
-  * avoid over use of `throw` particularly in `when` and `then` section
-  * usually statements in `given` section including helper functions of test are perfect to `throw` error
+
+6. Prefer to use swift language error handling mechanism to catch programmer/compiler's error of test code. This helps in writing non-distracting and clean code in test.
+    * avoid test framework statements like `XCTFail`/`XCTAssert` or even `fatalError()` to cover errors that are bound to be programmer or compile time (language) errors in actual test.
+    ```swift
+    func testRemoveOfflineContent() throws {
+        // given
+        try prepareContentBrowserViewModel(jsonFileName: "offlineStudentContents")
+        let launchFilePath = "\(learningItemCpntKey)/test.jabber"
+        let absoluteFilePath = try createSampleLaunchFile(atContentLocation: launchFilePath)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: absoluteFilePath.path))
+        // when
+        contentBrowserViewModel?.removeContent()
+        // then
+        XCTAssertFalse(FileManager.default.fileExists(atPath: absoluteFilePath.path))
+    }
+
+    ```
+    
+    * test function itself can `throws` error outside to XCTest framework. This allows propogation of such errors.
+    * generally statements in `given` section including test's helper functions are fine to `throw` or `throws` errors
+    * avoid over use of `throw` especially in `when` and `then` section as those are actually meant to assert the outcome
   
